@@ -1,34 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { axiosInstance } from "../lib/axios";
-import axios from "axios";
-import { token } from "../constants/config";
+import { getMe } from "../redux/actions/authActions";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 const ProtecdToken = ({ children }) => {
   const navigate = useNavigate();
-
-  const protecTokenMe = async () => {
-    try {
-      if (!token) {
-        return;
-      }
-      await axiosInstance.get("/auth/me");
-      navigate("/");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error?.response?.status === 401) {
-          localStorage.removeItem("token");
-          return;
-        }
-        alert(error?.response?.data?.message);
-        return;
-      }
-      alert(error?.message);
-    }
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    protecTokenMe();
+    dispatch(getMe(navigate, "/", null));
   }, []);
 
   return children;

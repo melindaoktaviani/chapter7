@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../../lib/axios";
+// import { axiosInstance } from "../../lib/axios";
 import HomeSkeleton from "./skeleton";
 import CarauselSection from "./section/CarauselSection";
 import CardMovie from "../../components/CardMovie";
 import Navbar from "../../components/Navbar";
 import { useSearch } from "../../contexts/SearchContext";
 import Footer from "../../components/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { getPopularMovie } from "../../redux/actions/movieActions";
 
 const HomePage = () => {
-  const [popularMovieList, setPopularMovieList] = useState([]);
+  const dispatch = useDispatch();
   const [carauselMovieList, setCarauselMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { popular } = useSelector((state) => state.movie);
 
   const {
     isSearch,
@@ -20,23 +24,9 @@ const HomePage = () => {
     handleClearSearch,
   } = useSearch();
 
-  const popularMovie = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axiosInstance.get("/movie/popular");
-      const { data } = await response.data;
-
-      setPopularMovieList(data);
-      setCarauselMovieList(data.slice(0, 3));
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    popularMovie();
-  }, []);
+    dispatch(getPopularMovie(setCarauselMovieList, setIsLoading));
+  }, [dispatch, setCarauselMovieList, setIsLoading]);
 
   return (
     <>
@@ -79,7 +69,7 @@ const HomePage = () => {
             <section className="container  py-10">
               <h1 className="pb-4 text-2xl font-bold">Popular Movies</h1>
               <div className="grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
-                {popularMovieList.map((movie) => (
+                {popular.map((movie) => (
                   <CardMovie key={movie.id} movie={movie} />
                 ))}
               </div>

@@ -4,18 +4,21 @@ import { axiosInstance } from "../lib/axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Search from "../assets/search2.svg";
-import axios from "axios";
-import { token } from "../constants/config";
+// import axios from "axios";
+// import { token } from "../constants/config";
 import Profile from "../assets/profile.svg";
 import Down from "../assets/down.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { getMe } from "../redux/actions/authActions";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [openSearch, setOpenSearch] = useState(false);
-  const [user, setUser] = useState(null);
   const [openProfile, setOpenProfile] = useState(false);
+  const [arrowRotation, setArrowRotation] = useState(false);
 
-  const [arrowRotation, setArrowRotation] = useState("rotate-0");
+  const { token, user } = useSelector((state) => state.auth);
 
   const toggleProfile = () => {
     setOpenProfile(!openProfile);
@@ -62,28 +65,14 @@ const Navbar = () => {
     }
   };
 
-  //get me
-  const getMe = async () => {
-    try {
-      if (!token) return;
-      const response = await axiosInstance.get("/auth/me");
-      const { data } = response.data;
-      setUser(data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        alert(error?.response?.data?.message);
-        return;
-      }
-      alert(error?.message);
-    }
-  };
-
   useEffect(() => {
-    getMe();
-  }, []);
+    if (token) {
+      dispatch(getMe(navigate, null, "/login"));
+    }
+  }, [dispatch, navigate, token]);
 
   return (
-    <div className="absolute left-0 right-0 top-0 z-40 w-full items-center bg-transparent">
+    <div className="absolute  top-0 z-40 w-full items-center bg-transparent">
       <nav className="mx-auto flex items-center justify-between  gap-5 px-4 py-6 lg:px-10">
         <button onClick={handleClearSearch}>
           <h1 className="text-2xl font-extrabold text-red-600 md:text-6xl">
@@ -100,10 +89,10 @@ const Navbar = () => {
               <img src={Search} className="h-6 w-6" />
             </div>
 
-            <div className="hidden lg:block">
+            <div className="mx-28 hidden w-full lg:block">
               <form
                 onSubmit={handleSubmitSearch}
-                className="relative flex w-[800px] items-center justify-center"
+                className="relative flex  items-center justify-center"
               >
                 <input
                   placeholder="Seach any movies"
