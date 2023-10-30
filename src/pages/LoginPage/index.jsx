@@ -1,18 +1,23 @@
 // import React from 'react'
-import axios from "axios";
+// import axios from "axios";
 import { useState } from "react";
 // import { VITE_API_URL } from "../../constants/config";
 import Navbar from "../../components/Navbar";
-import { axiosLogin } from "../../lib/axios";
-import { Link } from "react-router-dom";
+// import { axiosLogin } from "../../lib/axios";
+import { Link, useNavigate } from "react-router-dom";
 //import Google from "../../assets/google.svg";
 import GoogleLogin from "../../components/GoogleLogin";
 import IconShow from "../../assets/show.svg";
 import Facebook from "../../assets/facebook.svg";
-import { toastify } from "../../lib/toastify";
+// import { toastify } from "../../lib/toastify";
 import SpinnerLoading from "../../components/SpinnerLoading";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/actions/authActions";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -20,31 +25,7 @@ const Login = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    try {
-      setIsLoading(true);
-      const response = await axiosLogin.post("/auth/login", {
-        email,
-        password,
-      });
-      const { data } = response.data;
-      const { token } = data;
-
-      //menyimpan token ke localstorage
-      localStorage.setItem("token", token);
-
-      //direct ke homepage
-      window.location.replace("/");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toastify({
-          message: error.response.data.message,
-          type: "error",
-        });
-        setIsLoading(false);
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    dispatch(login(email, password, setIsLoading, navigate));
   };
 
   return (
