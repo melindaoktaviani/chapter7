@@ -3,6 +3,7 @@ import { convertDate } from "../utils";
 import { Link } from "react-router-dom";
 
 const CardMovie = ({ movie }) => {
+  console.log(movie);
   return (
     <Link to={`/details/${movie.id}`}>
       <div className="relative w-full rounded-md border-2 border-slate-900 bg-transparent transition-transform hover:-translate-y-1">

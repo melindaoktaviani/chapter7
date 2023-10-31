@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
-import { SearchProvider } from "./contexts/SearchContext.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { VITE_GOOGLE_CLIENT_ID } from "./constants/config.js";
 import { ToastContainer } from "react-toastify";
@@ -16,21 +15,19 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <GoogleOAuthProvider clientId={VITE_GOOGLE_CLIENT_ID}>
         <BrowserRouter>
-          <SearchProvider>
-            <App />
-            <ToastContainer
-              position="bottom-right"
-              autoClose={3000}
-              hideProgressBar
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover={false}
-              theme="light"
-            />
-          </SearchProvider>
+          <App />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={3000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover={false}
+            theme="light"
+          />
         </BrowserRouter>
       </GoogleOAuthProvider>
     </Provider>

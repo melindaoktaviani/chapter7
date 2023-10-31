@@ -6,6 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import Protected from "./components/Protected";
 import ProtecdToken from "./components/ProtecdToken";
 import ProfilePage from "./pages/ProfilePage";
+import SearchMovie from "./pages/SearchPage";
 
 const App = () => {
   const routes = [
@@ -47,6 +48,14 @@ const App = () => {
         <Protected>
           <ProfilePage />
         </Protected>
+      ),
+    },
+    {
+      path: "/search",
+      element: (
+        <ProtecdToken>
+          <SearchMovie />
+        </ProtecdToken>
       ),
     },
   ];
