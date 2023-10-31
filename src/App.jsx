@@ -53,9 +53,9 @@ const App = () => {
     {
       path: "/search",
       element: (
-        <ProtecdToken>
+        <Protected>
           <SearchMovie />
-        </ProtecdToken>
+        </Protected>
       ),
     },
   ];

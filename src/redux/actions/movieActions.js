@@ -1,14 +1,13 @@
 import axios from "axios";
 import { setPopular, setDetail, setSearch } from "../reducers/movieReducer";
-import { axiosInstance } from "../../lib/axios";
 import { VITE_API_URL } from "../../constants/config";
 
 export const getPopularMovie =
   (setCarauselMovieList, setIsLoading) => async (dispatch, getState) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const { token } = getState().auth;
-      const response = await axiosInstance.get("/movie/popular", {
+      const response = await axios.get(`${VITE_API_URL}/movie/popular`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -32,7 +31,7 @@ export const getDetailMovie =
     setIsLoading(true);
     try {
       let { token } = getState().auth;
-      const response = await axiosInstance.get(`/movie/${id}`, {
+      const response = await axios.get(`${VITE_API_URL}/movie/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -49,27 +48,26 @@ export const getDetailMovie =
     }
   };
 
-export const searchMovie =
-  (query, page, setIsLoading) => async (dispatch, getState) => {
-    setIsLoading(true);
-    try {
-      let { token } = getState().auth;
-      const response = await axios.get(
-        `${VITE_API_URL}/search/movie?page=${page}&query=${query}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+export const getSearchMovie = (query, page) => async (dispatch, getState) => {
+  // setIsLoading(true);
+  try {
+    let { token } = getState().auth;
+    const response = await axios.get(
+      `${VITE_API_URL}/search/movie?page=${page}&query=${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
-      const { data } = response.data;
-      dispatch(setSearch(data));
-      setIsLoading(false);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        alert(error?.response?.data?.status_message);
-        return;
-      }
-      alert(error?.status_message);
+      },
+    );
+    const { data } = response.data;
+    dispatch(setSearch(data));
+    // setIsLoading(false);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      alert(error?.response?.data?.status_message);
+      return;
     }
-  };
+    alert(error?.status_message);
+  }
+};

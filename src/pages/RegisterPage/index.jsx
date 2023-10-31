@@ -1,19 +1,20 @@
-import axios from "axios";
 import { useState } from "react";
-import { VITE_API_URL } from "../../constants/config";
 import { useNavigate } from "react-router-dom";
 import SpinnerLoading from "../../components/SpinnerLoading";
 import { toastify } from "../../lib/toastify";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import IconShow from "../../assets/show.svg";
+import { useDispatch } from "react-redux";
+import { register } from "../../redux/actions/authActions";
 
 const RegisterPage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const navigate = useNavigate();
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -24,7 +25,6 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
 
     if (form.password !== form.confirmPassword) {
       toastify({
@@ -34,34 +34,11 @@ const RegisterPage = () => {
       return;
     }
 
-    try {
-      setIsLoading(true);
-      const response = await axios.post(`${VITE_API_URL}/auth/register`, {
-        email: form.email,
-        name: form.firstName + " " + form.lastName,
-        password: form.password,
-      });
-      toastify({
-        message: "Register berhasil",
-        type: "success",
-      });
+    const fullName = form.firstName + " " + form.lastName;
 
-      // Setelah berhasil register, langsung redirect ke halaman home
-      const result = response.data;
-      localStorage.setItem("token", result.data.token);
-      // navigate("/");
-
-      // // Setelah berhasil register, langsung redirect ke halaman login
-      navigate("/login");
-    } catch (error) {
-      toastify({
-        message: error.response.data.message,
-        type: "error",
-      });
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
-    }
+    dispatch(
+      register(fullName, form.email, form.password, setIsLoading, navigate),
+    );
   };
 
   return (

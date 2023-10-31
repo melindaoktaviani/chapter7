@@ -1,27 +1,31 @@
 // import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { searchMovie } from "../../redux/actions/movieActions";
+import { getSearchMovie } from "../../redux/actions/movieActions";
 import CardMovie from "../../components/CardMovie";
+import Navbar from "../../components/Navbar";
+// import { IMAGE_URL_CARD } from "../../constants/config";
+// import { convertDate } from "../../utils";
 
 const SearchMovie = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
   const query = searchParams.get("query");
   const page = searchParams.get("page");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const { search } = useSelector((state) => state.movie);
 
-  // console.log(search);
+  console.log(search);
 
   useEffect(() => {
-    dispatch(searchMovie(query, page, setIsLoading));
-  }, [dispatch, query, page, setIsLoading]);
+    dispatch(getSearchMovie(query, page));
+  }, [dispatch, query, page, searchParams]);
 
   return (
-    <section className="container min-h-[100vh] pb-10 pt-28">
+    <>
+      <Navbar />
       <div className="flex items-center justify-between pb-4">
         <h1 className="text-2xl font-bold">
           Search Movie :{" "}
@@ -34,18 +38,12 @@ const SearchMovie = () => {
           Clear seach result
         </button>
       </div>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
-          {search.length === 0 ? (
-            <p>Movies not found</p>
-          ) : (
-            search.map((movie) => <CardMovie key={movie.id} movie={movie} />)
-          )}
-        </div>
-      )}
-    </section>
+      <div className="grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+        {search.map((movie) => (
+          <CardMovie key={movie.id} movie={movie} />
+        ))}
+      </div>
+    </>
   );
 };
 

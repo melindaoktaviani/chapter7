@@ -29,6 +29,7 @@ const Navbar = () => {
   const onLogout = () => {
     dispatch(logout());
     navigate("/login");
+    window.replace();
   };
 
   const handleSearch = (event) => {
@@ -36,7 +37,7 @@ const Navbar = () => {
     navigate(`/search?page=1&query=${query}`);
   };
 
-  console.log(query);
+  // console.log(query);
 
   // const handleSearch = (event) => {
   //   event.preventDefault();
@@ -47,7 +48,6 @@ const Navbar = () => {
   //   const searchUrl = `/search?page=1&query=${searchQuery}`;
 
   //   navigate(searchUrl);
-  //   console.log(searchQuery);
   // };
 
   useEffect(() => {
@@ -164,8 +164,8 @@ const Navbar = () => {
             <input
               placeholder="Seach any movies"
               id="search_movie"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              // value={query}
+              // onChange={(e) => setQuery(e.target.value)}
               className="w-full rounded-full border-2 border-red-600 bg-transparent px-5 py-2 text-white outline-none backdrop-blur-md focus:border-red-800"
             />
             <button

@@ -1,37 +1,22 @@
 // import React from 'react'
-import { useEffect, useState } from "react";
-import { token } from "../../constants/config";
-import { axiosInstance } from "../../lib/axios";
-import axios from "axios";
+import { useEffect } from "react";
 import BinarLogo from "../../assets/binar.jpeg";
 import Navbar from "../../components/Navbar";
-import { Link } from "react-router-dom";
-import { toastify } from "../../lib/toastify";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getMe } from "../../redux/actions/authActions";
 
 const Profile = () => {
-  const [profile, setProfile] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const getMe = async () => {
-    try {
-      if (!token) return;
-      const response = await axiosInstance.get("/auth/me");
-      const { data } = response.data;
-      setProfile(data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toastify({
-          message: error.response.data.message,
-          type: "error",
-        });
-        return;
-      }
-      alert(error?.message);
-    }
-  };
+  const { token, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    getMe();
-  }, []);
+    if (token) {
+      dispatch(getMe(navigate, null, "/login"));
+    }
+  }, [dispatch, navigate, token]);
 
   return (
     <>
@@ -53,13 +38,13 @@ const Profile = () => {
               </div>
 
               <div className="flex flex-col gap-8  md:border-r-2 md:pr-20">
-                <div>{profile.name}</div>
+                <div>{user.name}</div>
                 <div>
-                  {"*".repeat(profile?.email?.split("@")[0].length - 1) +
+                  {"*".repeat(user?.email?.split("@")[0].length - 1) +
                     "@" +
-                    profile?.email?.split("@")[1]}
+                    user?.email?.split("@")[1]}
                 </div>
-                <div>{profile?.createdAt?.split("T")[0]}</div>
+                <div>{user?.createdAt?.split("T")[0]}</div>
               </div>
             </div>
             <div className="flex flex-col items-center justify-center">
