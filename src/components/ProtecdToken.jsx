@@ -9,7 +9,7 @@ const ProtecdToken = ({ children }) => {
 
   useEffect(() => {
     dispatch(getMe(navigate, "/", null));
-  }, []);
+  }, [dispatch, navigate]);
 
   return children;
 };

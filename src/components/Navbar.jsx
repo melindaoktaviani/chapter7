@@ -1,19 +1,16 @@
-import { useSearch } from "../contexts/SearchContext";
 import { BsSearch } from "react-icons/bs";
-import { axiosInstance } from "../lib/axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Search from "../assets/search2.svg";
-// import axios from "axios";
-// import { token } from "../constants/config";
 import Profile from "../assets/profile.svg";
 import Down from "../assets/down.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { getMe } from "../redux/actions/authActions";
+import { getMe, logout } from "../redux/actions/authActions";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [query, setQuery] = useState("");
   const [openSearch, setOpenSearch] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const [arrowRotation, setArrowRotation] = useState(false);
@@ -25,44 +22,18 @@ const Navbar = () => {
     setArrowRotation(openProfile ? "rotate-0" : "rotate-180");
   };
 
-  const logout = (event) => {
-    event.preventDefault();
-
-    localStorage.removeItem("token");
-
-    window.location.replace("/login");
+  const onLogout = () => {
+    dispatch(logout());
+    navigate("/login");
   };
 
-  const {
-    search,
-    setSearch,
-    setSearchResults,
-    setIsSearch,
-    setIsSearchIsLoading,
-    handleClearSearch,
-  } = useSearch();
+  const handleSearch = (event) => {
+    event.preventDefault();
 
-  const handleSubmitSearch = async (e) => {
-    e.preventDefault();
-    navigate("/");
-    setIsSearch(true);
-    setIsSearchIsLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/search/movie?page=1&query=${search}`,
-      );
-      const { data } = response.data;
-      setIsSearch(true);
-      setSearchResults(data);
-      setIsSearchIsLoading(false);
-
-      console.log(data.data);
-
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-      setIsSearch(false);
+    if (query.trim() === "") {
+      return;
     }
+    navigate(`/search?page=1&query=${query}`);
   };
 
   useEffect(() => {
@@ -74,7 +45,7 @@ const Navbar = () => {
   return (
     <div className="absolute  top-0 z-40 w-full items-center bg-transparent">
       <nav className="mx-auto flex items-center justify-between  gap-5 px-4 py-6 lg:px-10">
-        <button onClick={handleClearSearch}>
+        <button>
           <h1 className="text-2xl font-extrabold text-red-600 md:text-6xl">
             MovieList
           </h1>
@@ -91,14 +62,15 @@ const Navbar = () => {
 
             <div className="mx-28 hidden w-full lg:block">
               <form
-                onSubmit={handleSubmitSearch}
+                onSubmit={handleSearch}
                 className="relative flex  items-center justify-center"
               >
                 <input
+                  type="text"
                   placeholder="Seach any movies"
-                  id="search_movie"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  id="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
                   className="w-full rounded-full border-2 border-red-600 bg-transparent px-5 py-2 text-white outline-none backdrop-blur-md focus:border-red-800"
                 />
                 <button
@@ -114,15 +86,12 @@ const Navbar = () => {
         <div className="relative flex cursor-default flex-row items-center  justify-center gap-4">
           {user ? (
             <>
-              <div className="flex w-40 flex-row items-center gap-1 rounded-lg bg-slate-100 pl-2">
+              <div className="flex w-40 flex-row items-center justify-center gap-1 rounded-lg bg-slate-100 px-1 py-1">
                 <img src={Profile} />
-                <div className=" border-red-700 px-3 py-2 text-lg font-bold text-red-700 ">
+                <div className=" border-red-700  text-lg font-bold text-red-700 ">
                   {user.name.split(" ")[0]}
                 </div>
-                <button
-                  className={`absolute right-2 transform ${arrowRotation}`}
-                  onClick={toggleProfile}
-                >
+                <button className={` ${arrowRotation}`} onClick={toggleProfile}>
                   <img src={Down} />
                 </button>
               </div>
@@ -139,13 +108,12 @@ const Navbar = () => {
                   <h1 className="cursor-pointer text-center text-lg font-semibold">
                     Pengaturan
                   </h1>
-                  <Link
+                  <button
                     className="rounded-lg border-2 border-red-700 bg-red-700 px-3 py-2 text-center font-bold text-white"
-                    as={Link}
-                    onClick={logout}
+                    onClick={onLogout}
                   >
                     Logout
-                  </Link>
+                  </button>
                 </div>
               )}
             </>
@@ -172,14 +140,14 @@ const Navbar = () => {
       <div className={`${openSearch ? "block" : "hidden"} lg:hidden`}>
         <div className="flex w-full items-center justify-center px-4">
           <form
-            onSubmit={handleSubmitSearch}
+            onSubmit={handleSearch}
             className="relative flex w-full items-center justify-center"
           >
             <input
               placeholder="Seach any movies"
               id="search_movie"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               className="w-full rounded-full border-2 border-red-600 bg-transparent px-5 py-2 text-white outline-none backdrop-blur-md focus:border-red-800"
             />
             <button

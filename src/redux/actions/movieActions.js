@@ -1,13 +1,13 @@
 import axios from "axios";
-import { setPopular, setDetail } from "../reducers/movieReducer";
-import { axiosInstance } from "../../lib/axios";
+import { setPopular, setDetail, setSearch } from "../reducers/movieReducer";
+import { VITE_API_URL } from "../../constants/config";
 
 export const getPopularMovie =
   (setCarauselMovieList, setIsLoading) => async (dispatch, getState) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const { token } = getState().auth;
-      const response = await axiosInstance.get("/movie/popular", {
+      const response = await axios.get(`${VITE_API_URL}/movie/popular`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,12 +31,12 @@ export const getDetailMovie =
     setIsLoading(true);
     try {
       let { token } = getState().auth;
-      const response = await axiosInstance.get(`/movie/${id}`, {
+      const response = await axios.get(`${VITE_API_URL}/movie/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const { data } = await response.data;
+      const { data } = response.data;
       dispatch(setDetail(data));
       setIsLoading(false);
     } catch (error) {
@@ -45,5 +45,30 @@ export const getDetailMovie =
         return;
       }
       alert(error.message);
+    }
+  };
+
+export const getSearchMovie =
+  (query, page, setIsLoading) => async (dispatch, getState) => {
+    setIsLoading(true);
+    try {
+      let { token } = getState().auth;
+      const response = await axios.get(
+        `${VITE_API_URL}/search/movie?page=${page}&query=${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      const { data } = response.data;
+      dispatch(setSearch(data));
+      setIsLoading(false);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        alert(error?.response?.data?.status_message);
+        return;
+      }
+      alert(error?.status_message);
     }
   };
