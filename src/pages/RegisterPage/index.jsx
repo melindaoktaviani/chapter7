@@ -47,7 +47,7 @@ const RegisterPage = () => {
     <>
       <Navbar />
       <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 px-8 pt-10 sm:px-20  md:px-20">
-        <div className="flex max-h-[450px] w-full max-w-4xl  rounded-md rounded-r-3xl bg-slate-300 ">
+        <div className="flex max-h-[450px] w-full max-w-4xl  rounded-md  bg-slate-300 ">
           <div className="md:bg flex justify-center">
             <img
               src={RegisIcon}
@@ -57,14 +57,14 @@ const RegisterPage = () => {
           <div className=" m-auto w-full rounded-md bg-white px-10 py-3 shadow-xl lg:max-w-lg   lg:rounded-l-3xl">
             <h1 className="text-center text-xl font-bold  ">SIGN UP</h1>
 
-            <div className=" mt-4 ">
+            <div className=" mt-7 ">
               <div className="mb-2 flex flex-row  gap-2">
                 <div className="w-full">
                   <h2 className="block text-sm font-semibold text-gray-800">
                     First Name
                   </h2>
                   <input
-                    className="mt-1 block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring focus:ring-opacity-40"
+                    className=" block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring focus:ring-opacity-40"
                     type="text"
                     value={form.firstName}
                     onChange={(e) => {
@@ -78,7 +78,7 @@ const RegisterPage = () => {
                     Last Name
                   </h2>
                   <input
-                    className="mt-1 block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring focus:ring-opacity-40"
+                    className=" block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring focus:ring-opacity-40"
                     type="text"
                     value={form.lastName}
                     onChange={(e) => {
@@ -94,7 +94,7 @@ const RegisterPage = () => {
                   Email
                 </h2>
                 <input
-                  className="mt-1 block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className=" block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring focus:ring-opacity-40"
                   type="email"
                   value={form.email}
                   onChange={(e) => {
@@ -110,7 +110,7 @@ const RegisterPage = () => {
                 </h2>
                 <div className="relative flex flex-row items-center">
                   <input
-                    className="mt-1 block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring  focus:ring-opacity-40"
+                    className=" block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring  focus:ring-opacity-40"
                     type={showPassword ? "text" : "password"}
                     value={form.password}
                     onChange={(e) => {
@@ -135,7 +135,7 @@ const RegisterPage = () => {
                 </h2>
                 <div className="relative flex flex-row items-center">
                   <input
-                    className="mt-1 block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring  focus:ring-opacity-40"
+                    className=" block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring  focus:ring-opacity-40"
                     type={showConfirmPassword ? "text" : "password"}
                     value={form.confirmPassword}
                     onChange={(e) => {
@@ -154,7 +154,7 @@ const RegisterPage = () => {
                   </button>
                 </div>
               </div>
-              <div className="mt-6">
+              <div className="mt-7">
                 <button
                   className="flex w-full items-center justify-center rounded-md bg-red-600 px-4 py-1 font-semibold text-white  drop-shadow-lg   "
                   onClick={handleSubmit}

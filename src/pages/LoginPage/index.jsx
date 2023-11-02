@@ -40,7 +40,7 @@ const Login = () => {
                   Email
                 </h2>
                 <input
-                  className="mt-2 block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className=" block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring focus:ring-opacity-40"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -53,7 +53,7 @@ const Login = () => {
                 </h2>
                 <div className="relative flex flex-row items-center">
                   <input
-                    className="mt-2 block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring  focus:ring-opacity-40"
+                    className=" block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring  focus:ring-opacity-40"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     placeholder="Password"

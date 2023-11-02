@@ -10,6 +10,7 @@ import "swiper/css/pagination";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 
 const CarauselSection = ({ carauselMovieList }) => {
+  const carosel = carauselMovieList.slice(0, 3);
   return (
     <Swiper
       spaceBetween={30}
@@ -29,7 +30,7 @@ const CarauselSection = ({ carauselMovieList }) => {
         "--swiper-pagination-bullet-inactive-color": "#999999",
       }}
     >
-      {carauselMovieList?.map((movie) => (
+      {carosel?.map((movie) => (
         <SwiperSlide key={movie.id}>
           <div className="relative h-[100vh] max-h-[100vh] w-full">
             <div className="absolute left-0 right-0 top-0 z-10 h-full w-full bg-gradient-to-r from-slate-950 to-slate-950/30"></div>
