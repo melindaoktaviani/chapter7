@@ -38,7 +38,7 @@ const Profile = () => {
               </div>
 
               <div className="flex flex-col gap-8  md:border-r-2 md:pr-20">
-                <div>{user.name}</div>
+                <div>{user?.name}</div>
                 <div>
                   {"*".repeat(user?.email?.split("@")[0].length - 1) +
                     "@" +
