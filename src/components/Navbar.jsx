@@ -86,9 +86,9 @@ const Navbar = () => {
         <div className="relative flex cursor-default flex-row items-center  justify-center gap-4">
           {user ? (
             <>
-              <div className="flex w-40 flex-row items-center justify-center gap-1 rounded-lg bg-slate-100 px-1 py-1">
+              <div className="flex w-max flex-row items-center justify-center gap-2 rounded-lg bg-slate-100 px-3 py-1">
                 <img src={Profile} />
-                <div className=" border-red-700  text-lg font-bold text-red-700 ">
+                <div className=" border-red-700  text-xl font-bold text-red-700 ">
                   {user.name.split(" ")[0]}
                 </div>
                 <button className={` ${arrowRotation}`} onClick={toggleProfile}>
