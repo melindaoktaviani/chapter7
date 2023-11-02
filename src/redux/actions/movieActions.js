@@ -13,9 +13,9 @@ export const getPopularMovie =
         },
       });
       const { data } = response.data;
-
+      const popular = data.slice(0, 3);
       dispatch(setPopular(data));
-      setCarauselMovieList(data.slice(0, 3));
+      setCarauselMovieList(popular);
       setIsLoading(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {
