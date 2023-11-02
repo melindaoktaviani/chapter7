@@ -48,26 +48,27 @@ export const getDetailMovie =
     }
   };
 
-export const getSearchMovie = (query, page) => async (dispatch, getState) => {
-  // setIsLoading(true);
-  try {
-    let { token } = getState().auth;
-    const response = await axios.get(
-      `${VITE_API_URL}/search/movie?page=${page}&query=${query}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+export const getSearchMovie =
+  (query, page, setIsLoading) => async (dispatch, getState) => {
+    setIsLoading(true);
+    try {
+      let { token } = getState().auth;
+      const response = await axios.get(
+        `${VITE_API_URL}/search/movie?page=${page}&query=${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      },
-    );
-    const { data } = response.data;
-    dispatch(setSearch(data));
-    // setIsLoading(false);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      alert(error?.response?.data?.status_message);
-      return;
+      );
+      const { data } = response.data;
+      dispatch(setSearch(data));
+      setIsLoading(false);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        alert(error?.response?.data?.status_message);
+        return;
+      }
+      alert(error?.status_message);
     }
-    alert(error?.status_message);
-  }
-};
+  };

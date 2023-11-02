@@ -1,18 +1,14 @@
-// import React from 'react'
-// import axios from "axios";
 import { useState } from "react";
-// import { VITE_API_URL } from "../../constants/config";
 import Navbar from "../../components/Navbar";
-// import { axiosLogin } from "../../lib/axios";
 import { Link, useNavigate } from "react-router-dom";
-//import Google from "../../assets/google.svg";
 import GoogleLogin from "../../components/GoogleLogin";
 import IconShow from "../../assets/show.svg";
 import Facebook from "../../assets/facebook.svg";
-// import { toastify } from "../../lib/toastify";
 import SpinnerLoading from "../../components/SpinnerLoading";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/actions/authActions";
+import HideShow from "../../assets/hidden.svg";
+import Human from "../../assets/human1.svg";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -31,75 +27,81 @@ const Login = () => {
   return (
     <>
       <Navbar />
-      <div className=" flex h-screen  items-center justify-center  ">
-        <div className="px-20 py-8 sm:w-[600px] md:border-2 ">
-          {/* LOGIN */}
-          <div className="mb-6 flex w-full justify-center">
-            <h1 className="text-4xl font-bold"> LOGIN </h1>
+      <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 px-8 pt-10 md:px-12 ">
+        <div className="flex max-h-[400px] max-w-4xl flex-row rounded-md bg-slate-300">
+          <div className="flex justify-center">
+            <img src={Human} className="hidden md:block" />
           </div>
-
-          {/* Form inputan dan button register */}
-          <div className="mt-12 flex flex-col gap-5  ">
-            <div>
-              <h2 className="mb-2 text-lg font-bold">Email Address</h2>
-              <input
-                className="h-10 w-full rounded-md border-2 pl-2 text-lg"
-                type="email"
-                placeholder="Email Address"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </div>
-            <div>
-              <h2 className="mb-2 text-lg font-bold">Password</h2>
-              <div className="relative flex flex-row">
+          <div className="m-auto w-full rounded-md bg-white px-10 py-4 shadow-xl sm:max-w-sm lg:max-w-md lg:rounded-l-3xl">
+            <h1 className="text-center text-xl font-bold  ">LOGIN</h1>
+            <div className="mt-6">
+              <div className="mb-2">
+                <h2 className="block text-sm font-semibold text-gray-800">
+                  Email
+                </h2>
                 <input
-                  className=" h-10 w-full rounded-md border-2 pl-2 text-lg"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
+                  className="mt-2 block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring focus:ring-opacity-40"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
                 />
+              </div>
+              <div className="mb-2">
+                <h2 className="block text-sm font-semibold text-gray-800">
+                  Password
+                </h2>
+                <div className="relative flex flex-row items-center">
+                  <input
+                    className="mt-2 block w-full rounded-md border bg-white px-4 py-1 focus:outline-none focus:ring  focus:ring-opacity-40"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    className="absolute bottom-1/2 right-2  translate-y-1/2 "
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <img src={IconShow} />
+                    ) : (
+                      <img src={HideShow} />
+                    )}
+                  </button>
+                </div>
+              </div>
+              <div className="mt-6">
                 <button
-                  className="absolute bottom-1/2 right-2 translate-y-1/2 "
-                  onClick={() => setShowPassword(!showPassword)}
+                  className="flex w-full items-center justify-center rounded-md bg-red-600 px-4 py-1 font-semibold text-white  drop-shadow-lg   "
+                  onClick={handleLogin}
                 >
-                  <img src={IconShow} />
+                  {isLoading ? <SpinnerLoading /> : <span>LOGIN</span>}
                 </button>
               </div>
             </div>
-
-            <button
-              onClick={handleLogin}
-              className="mt-6 flex items-center justify-center rounded-xl border-2 bg-red-600 py-2 font-bold text-white md:py-3 "
-            >
-              {isLoading ? <SpinnerLoading /> : <span>LOGIN</span>}
-            </button>
-          </div>
-
-          {/* Login dengan menggunakan google or facebook */}
-          <div className="mt-8 flex flex-col items-center gap-4">
-            <h1 className="text-base font-semibold">Or Sign Up Using:</h1>
-            <div className="flex flex-row gap-3">
-              <div>
+            <div className="relative mt-6 flex w-full items-center justify-center border border-t">
+              <div className="absolute bg-white px-5">or</div>
+            </div>
+            <div className="mt-4 flex flex-row justify-center gap-2 ">
+              <div className="flex w-[50%] rounded-md border bg-slate-200 py-1 drop-shadow-lg">
                 <GoogleLogin />
               </div>
-              <div>
-                <img src={Facebook} className="h-9" />
+              <div className="flex w-[50%] justify-center rounded-md border-2 bg-blue-700 py-1 drop-shadow-lg">
+                <img src={Facebook} className="h-6" />
               </div>
             </div>
-          </div>
 
-          {/* login ketika sudah memiliki akun   */}
-          <div className=" mt-6 flex flex-col items-center gap-1 md:flex-row md:justify-center ">
-            <p>Don't have an account?</p>
-            <Link
-              className="border-b-2 border-black font-bold"
-              as={Link}
-              to="/register"
-            >
-              Register
-            </Link>
+            <div className="mt-8 flex w-full flex-row justify-center gap-1 text-center text-xs font-light text-gray-700">
+              <p>Don't have an account?</p>
+              <Link
+                as={Link}
+                to="/register"
+                className="font-medium hover:underline"
+              >
+                Sign Up
+              </Link>
+            </div>
           </div>
         </div>
       </div>

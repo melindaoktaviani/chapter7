@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import { axiosInstance } from "../../lib/axios";
 import { IMAGE_URL_CARD, IMAGE_URL_HEADER } from "../../constants/config";
 import { convertDate } from "../../utils";
 import { useParams } from "react-router-dom";
@@ -19,8 +18,6 @@ const DetailsPage = () => {
   useEffect(() => {
     dispatch(getDetailMovie(id, setIsLoading));
   }, [id, dispatch, setIsLoading]);
-
-  console.log(detail);
 
   return (
     <>

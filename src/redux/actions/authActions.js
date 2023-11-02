@@ -1,14 +1,13 @@
 import axios from "axios";
 import { setToken, setUser } from "../reducers/authReducer";
 import { VITE_API_URL } from "../../constants/config";
-import { toastify } from "../../lib/toastify";
+import { toastify } from "../../utils/toastify";
 
 export const getMe =
   (navigate, navigatePathSuccess, navigatePathError) =>
   async (dispatch, getState) => {
     try {
       let { token } = getState().auth;
-
       const response = await axios.get(`${VITE_API_URL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -29,11 +28,15 @@ export const getMe =
           if (navigatePathError) navigate(navigatePathError);
           return;
         }
-
-        alert(error?.response?.data?.message);
-        return;
+        toastify({
+          message: error?.response?.data?.message,
+          type: "Error",
+        });
       }
-
+      toastify({
+        message: error?.response?.data?.message,
+        type: "Error",
+      });
       alert(error?.message);
     }
   };

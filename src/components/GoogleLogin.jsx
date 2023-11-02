@@ -19,8 +19,11 @@ const GoogleLogin = () => {
     },
   });
   return (
-    <button onClick={() => loginGoogle()}>
-      <img src={Google} />
+    <button
+      onClick={() => loginGoogle()}
+      className="flex w-full justify-center"
+    >
+      <img src={Google} className="h-6" />
     </button>
   );
 };

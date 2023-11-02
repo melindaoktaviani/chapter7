@@ -1,11 +1,7 @@
-// import { useSearch } from "../contexts/SearchContext";
 import { BsSearch } from "react-icons/bs";
-// import { axiosInstance } from "../lib/axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Search from "../assets/search2.svg";
-// import axios from "axios";
-// import { token } from "../constants/config";
 import Profile from "../assets/profile.svg";
 import Down from "../assets/down.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,26 +25,16 @@ const Navbar = () => {
   const onLogout = () => {
     dispatch(logout());
     navigate("/login");
-    window.replace();
   };
 
   const handleSearch = (event) => {
     event.preventDefault();
+
+    if (query.trim() === "") {
+      return;
+    }
     navigate(`/search?page=1&query=${query}`);
   };
-
-  // console.log(query);
-
-  // const handleSearch = (event) => {
-  //   event.preventDefault();
-  //   const searchQuery = event.target.search.value;
-  //   if (searchQuery.trim() === "") {
-  //     return;
-  //   }
-  //   const searchUrl = `/search?page=1&query=${searchQuery}`;
-
-  //   navigate(searchUrl);
-  // };
 
   useEffect(() => {
     if (token) {
@@ -100,15 +86,12 @@ const Navbar = () => {
         <div className="relative flex cursor-default flex-row items-center  justify-center gap-4">
           {user ? (
             <>
-              <div className="flex w-40 flex-row items-center gap-1 rounded-lg bg-slate-100 pl-2">
+              <div className="flex w-40 flex-row items-center justify-center gap-1 rounded-lg bg-slate-100 px-1 py-1">
                 <img src={Profile} />
-                <div className=" border-red-700 px-3 py-2 text-lg font-bold text-red-700 ">
+                <div className=" border-red-700  text-lg font-bold text-red-700 ">
                   {user.name.split(" ")[0]}
                 </div>
-                <button
-                  className={`absolute right-2 transform ${arrowRotation}`}
-                  onClick={toggleProfile}
-                >
+                <button className={` ${arrowRotation}`} onClick={toggleProfile}>
                   <img src={Down} />
                 </button>
               </div>
@@ -125,13 +108,12 @@ const Navbar = () => {
                   <h1 className="cursor-pointer text-center text-lg font-semibold">
                     Pengaturan
                   </h1>
-                  <Link
+                  <button
                     className="rounded-lg border-2 border-red-700 bg-red-700 px-3 py-2 text-center font-bold text-white"
-                    as={Link}
                     onClick={onLogout}
                   >
                     Logout
-                  </Link>
+                  </button>
                 </div>
               )}
             </>
@@ -164,8 +146,8 @@ const Navbar = () => {
             <input
               placeholder="Seach any movies"
               id="search_movie"
-              // value={query}
-              // onChange={(e) => setQuery(e.target.value)}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               className="w-full rounded-full border-2 border-red-600 bg-transparent px-5 py-2 text-white outline-none backdrop-blur-md focus:border-red-800"
             />
             <button
