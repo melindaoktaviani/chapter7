@@ -13,9 +13,10 @@ export const getPopularMovie =
         },
       });
       const { data } = response.data;
+      const carosel = data.slice(0, 3);
 
       dispatch(setPopular(data));
-      setCarauselMovieList(data.slice(0, 3));
+      setCarauselMovieList(carosel);
       setIsLoading(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {
